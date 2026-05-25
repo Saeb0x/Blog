@@ -1,0 +1,67 @@
+.site-header {
+  border-bottom: 1px solid $border;
+  padding: 1.25rem 0;
+  background: rgba($bg, 0.5);
+}
+
+.header-inner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+}
+
+.site-title {
+  font-family: $font-mono;
+  font-size: 1rem;
+  font-weight: 600;
+  color: $text;
+  letter-spacing: -0.01em;
+  white-space: nowrap;
+  text-shadow: 0 0 14px rgba($accent, 0.5);
+  transition: text-shadow 0.2s ease;
+
+  &:hover {
+    color: $text;
+    text-shadow: 0 0 20px rgba($accent, 0.75);
+
+    .cursor {
+      color: $accent-hover;
+      text-shadow: 0 0 10px $accent-hover;
+    }
+  }
+}
+
+.cursor {
+  display: inline-block;
+  color: $accent;
+  text-shadow: 0 0 8px $accent;
+  animation: blink 1s step-end infinite;
+  margin-left: 1px;
+  line-height: 1;
+}
+
+@keyframes blink {
+  0%, 100% { opacity: 1; }
+  50%       { opacity: 0; }
+}
+
+.site-nav {
+  display: flex;
+  align-items: center;
+  gap: 1.75rem;
+}
+
+.nav-link {
+  font-family: $font-mono;
+  font-size: 0.8rem;
+  color: $text-muted;
+  letter-spacing: 0.04em;
+  transition: color 0.15s ease, text-shadow 0.15s ease;
+
+  &:hover,
+  &.active {
+    color: $accent;
+    text-shadow: 0 0 10px rgba($accent, 0.5);
+  }
+}

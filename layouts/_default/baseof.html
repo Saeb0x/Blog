@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="{{ .Site.Language.Locale | default "en" }}">
+  <head>
+    {{- partial "head.html" . -}}
+  </head>
+  <body>
+    <div class="room">
+      <div class="monitor">
+        <div class="screen">
+          <div class="boot-screen" id="bootScreen">
+            <div class="boot-text" id="bootText"></div>
+          </div>
+          <div class="screen-scroll">
+            {{- partial "header.html" . -}}
+            <main class="main-content">
+              {{- block "main" . }}{{- end }}
+            </main>
+            {{- partial "footer.html" . -}}
+          </div>
+          <div class="status-bar">
+            <span class="status-left">
+              {{- if .IsHome -}}
+                ~/saeb0x/blog/posts
+              {{- else if strings.HasPrefix .RelPermalink "/about" -}}
+                ~/saeb0x/blog/about
+              {{- else if eq .Section "posts" -}}
+                ~/saeb0x/blog/posts
+              {{- else -}}
+                ~/saeb0x/blog/{{ .Section }}
+              {{- end -}}
+            </span>
+            <span class="status-center">{{ if .IsHome }}Posts{{ else }}{{ .Title }}{{ end }}</span>
+            <span class="status-right" id="statusClock"></span>
+          </div>
+        </div>
+        <div class="monitor-chin">
+          <span class="monitor-logo">S.N.</span>
+          <div class="monitor-power">
+            <span class="monitor-led" id="monitorLed" title="Power"></span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>

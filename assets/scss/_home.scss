@@ -1,0 +1,61 @@
+.section-label {
+  font-family: $font-mono;
+  font-size: 0.78rem;
+  font-weight: normal;
+  color: $text-faint;
+  letter-spacing: 0.06em;
+  margin-bottom: 1.25rem;
+}
+
+.post-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+  padding-top: 1.5rem;
+}
+
+.post-item-link {
+  display: flex;
+  align-items: baseline;
+  gap: 0.75rem;
+  padding: 0.3rem 0;
+  color: inherit;
+  transition: none;
+
+  &:hover {
+    .post-title { color: $accent; }
+    .post-prompt {
+      color: $accent-hover;
+      animation: blink 0.7s step-end infinite;
+    }
+  }
+}
+
+.post-prompt {
+  font-family: $font-mono;
+  font-size: 0.875rem;
+  color: $border;
+  flex-shrink: 0;
+  transition: color 0.15s ease;
+  user-select: none;
+}
+
+.post-date {
+  font-family: $font-mono;
+  font-size: 0.825rem;
+  color: $text-muted;
+  flex-shrink: 0;
+  min-width: 6.5em;
+}
+
+.post-item-link .post-title {
+  font-size: 0.95rem;
+  color: $text;
+  transition: color 0.15s ease;
+}
+
+.no-posts {
+  font-family: $font-mono;
+  font-size: 0.85rem;
+  color: $text-faint;
+}

@@ -1,0 +1,7 @@
+<div class="video-wrapper">
+  <video controls preload="metadata">
+    <source src="{{ .Get "src" }}" type="{{ .Get "type" | default "video/mp4" }}">
+    Your browser does not support the video element.
+  </video>
+  {{ with .Get "caption" }}<p class="video-caption">{{ . }}</p>{{ end }}
+</div>

@@ -1,0 +1,30 @@
+{{ define "main" }}
+<div class="container-wide">
+  <div class="win-window">
+    <div class="win-titlebar">
+      <div class="win-buttons">
+        <span class="win-btn win-btn-close"></span>
+        <span class="win-btn win-btn-min"></span>
+        <span class="win-btn win-btn-max"></span>
+      </div>
+      <span class="win-title">{{ .Title }}</span>
+    </div>
+    <article class="post win-body">
+      <header class="post-header">
+        <h1 class="post-title">{{ .Title }}</h1>
+      </header>
+      <div class="post-content">
+        {{ .Content }}
+      </div>
+      <div class="about-social">
+        {{ with .Site.Params.github }}
+        <a href="{{ . }}" target="_blank" rel="noopener noreferrer">github</a>
+        {{ end }}
+        {{ with .Site.Params.linkedin }}
+        <a href="{{ . }}" target="_blank" rel="noopener noreferrer">linkedin</a>
+        {{ end }}
+      </div>
+    </article>
+  </div>
+</div>
+{{ end }}

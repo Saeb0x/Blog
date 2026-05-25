@@ -1,0 +1,21 @@
+// Color Palette.
+$room-bg: #050505;          // Dark room behind the monitor.
+$bezel: #3c3c3c;            // Monitor plastic body.
+$bezel-light: #585858;      // Bevel highlight edge.
+$bezel-shadow: #161616;     // Bevel shadow edge.
+$bg: #020a14;               // Screen background - dark blue-black.
+$bg-elevated: #051422;      // Elevated surfaces - code blocks.
+$accent: #00aaff;           // Phosphor blue - primary accent.
+$accent-hover: #33c0ff;     // Brighter phosphor on hover.
+$text: #c8e0f8;             // Body text - blue-tinted off-white.
+$text-muted: #5a90bc;       // Secondary text.
+$text-faint: #2a4a68;       // Very subtle - separators.
+$border: #0a1c30;           // Borders and dividers.
+
+// Typography.
+$font-mono: 'Cascadia Code', 'Fira Code', 'Consolas', 'Courier New', monospace;
+$font-sans: -apple-system, 'Segoe UI', system-ui, Helvetica, Arial, sans-serif;
+
+// Layout.
+$max-width: 860px;
+$gap: clamp(1rem, 4vw, 2rem);

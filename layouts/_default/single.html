@@ -1,0 +1,32 @@
+{{ define "main" }}
+<div class="container">
+  <div class="win-window">
+    <div class="win-titlebar">
+      <div class="win-buttons">
+        <span class="win-btn win-btn-close"></span>
+        <span class="win-btn win-btn-min"></span>
+        <span class="win-btn win-btn-max"></span>
+      </div>
+      <span class="win-title">{{ .Title }}</span>
+    </div>
+    <article class="post win-body">
+      <header class="post-header">
+        <h1 class="post-title">{{ .Title }}</h1>
+        {{- partial "post-meta.html" . -}}
+      </header>
+      <div class="post-content">
+        {{ .Content }}
+      </div>
+      {{ with .Params.tags }}
+      <footer class="post-footer">
+        <div class="post-tags">
+          {{ range . }}
+          <a href="{{ "/tags/" | relURL }}{{ . | urlize }}" class="tag">{{ . }}</a>
+          {{ end }}
+        </div>
+      </footer>
+      {{ end }}
+    </article>
+  </div>
+</div>
+{{ end }}

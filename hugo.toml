@@ -1,0 +1,40 @@
+baseURL = "https://saebnaser.blog/"
+title = "Saeb Naser"
+locale = "en-us"
+
+enableEmoji = true
+enableRobotsTXT = true
+
+[pagination]
+  pagerSize = 10
+
+[permalinks]
+  posts = "/post/:slug/"
+
+[markup]
+  [markup.highlight]
+    style = "monokai"
+    noClasses = true
+    lineNos = false
+    tabWidth = 4
+    guessSyntax = true
+  [markup.goldmark.renderer]
+    unsafe = true
+
+[[menus.main]]
+  identifier = "about"
+  name = "about"
+  url = "/about/"
+  weight = 10
+
+[[menus.main]]
+  identifier = "contact"
+  name = "contact"
+  url = "mailto:saebknas@gmail.com"
+  weight = 20
+
+[params]
+  description = "Computer Engineering graduate writing about C/C++, game engine development, graphics, networking, and computer architecture."
+  author = "Saeb Naser"
+  github = "https://github.com/Saeb0x"
+  linkedin = "https://www.linkedin.com/in/saebnaser/"
