@@ -5,10 +5,10 @@
   // Boot sequence.
   var BOOT_LINES = [
     { text: 'initializing file system...  OK', delay: 1000 },
-    { text: 'mounting /posts...  OK', delay: 1500 },
+    { text: 'mounting /posts...  OK', delay: 1200 },
     { text: 'fetching latest...  OK', delay: 1000 },
     { text: '', delay: 0 },
-    { text: 'NOTE(saeb): I write about things and occasionally get them right. no warranty :)', delay: 3500 }
+    { text: 'NOTE(saeb): I write about things and occasionally get them right. no warranty :)', delay: 2000 }
   ];
 
   function runBoot()
@@ -119,7 +119,20 @@
 
   document.addEventListener('DOMContentLoaded', function ()
     {
-      runBoot();
+      if (window.matchMedia('(max-width: 640px)').matches)
+      {
+        var overlay = document.getElementById('bootScreen');
+        
+        if (overlay)
+        {
+          overlay.remove();
+        }
+      }
+      else
+      {
+        runBoot();
+      }
+      
       startClock();
       initPower();
     }
