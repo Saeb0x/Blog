@@ -4,6 +4,7 @@ locale = "en-us"
 
 enableEmoji = true
 enableRobotsTXT = true
+disableKinds = ["taxonomy", "term"]
 
 [pagination]
   pagerSize = 10
@@ -23,13 +24,13 @@ enableRobotsTXT = true
 
 [[menus.main]]
   identifier = "about"
-  name = "about"
+  name = "About"
   url = "/about/"
   weight = 10
 
 [[menus.main]]
   identifier = "contact"
-  name = "contact"
+  name = "Contact"
   url = "mailto:saebknas@gmail.com"
   weight = 20
 

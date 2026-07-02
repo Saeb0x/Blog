@@ -1,74 +1,13 @@
 .page-header {
-  margin-bottom: 2.5rem;
-  padding-bottom: 1.5rem;
-  border-bottom: 1px solid $border;
+  margin-bottom: 0.75rem;
 }
 
 .page-title {
   font-family: $font-mono;
-  font-size: 1.5rem;
-  font-weight: 600;
+  font-size: 1rem;
+  font-weight: 700;
   color: $text;
   line-height: 1.3;
-}
-
-// Window Chrome.
-
-.win-window {
-  border: 1px solid $border;
-  border-radius: 3px;
-  box-shadow:
-    inset 1px 1px 0 rgba(255, 255, 255, 0.04),
-    inset -1px -1px 0 rgba(0, 0, 0, 0.3),
-    0 4px 24px rgba(0, 0, 0, 0.4);
-}
-
-.win-titlebar {
-  background: $bg-elevated;
-  border-bottom: 1px solid $border;
-  padding: 0.4rem 0.75rem;
-  display: flex;
-  align-items: center;
-  gap: 0.75rem;
-  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.03);
-  user-select: none;
-}
-
-.win-buttons {
-  display: flex;
-  gap: 5px;
-  flex-shrink: 0;
-}
-
-.win-btn {
-  width: 11px;
-  height: 11px;
-  display: inline-block;
-  border: 1px solid rgba(0, 0, 0, 0.35);
-}
-
-.win-btn-close { background: #7a3030; }
-.win-btn-min { background: #7a6030; }
-.win-btn-max { background: #2a6050; }
-
-.win-title {
-  flex: 1;
-  text-align: center;
-  font-family: $font-mono;
-  font-size: 0.72rem;
-  color: $text-muted;
-  letter-spacing: 0.04em;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-}
-
-.win-body {
-  padding: 2rem;
-
-  .post-header {
-    margin-top: 0;
-  }
 }
 
 // Single Post.
@@ -81,12 +20,11 @@
 
 .post-title {
   font-family: $font-mono;
-  font-size: clamp(1.4rem, 4vw, 1.85rem);
-  font-weight: 600;
+  font-size: clamp(1.3rem, 3.5vw, 1.65rem);
+  font-weight: 700;
   color: $text;
   line-height: 1.25;
   margin-bottom: 1rem;
-  letter-spacing: -0.02em;
 }
 
 .post-meta {
@@ -94,7 +32,7 @@
   align-items: center;
   gap: 0.5rem;
   font-family: $font-mono;
-  font-size: 0.8rem;
+  font-size: 0.875rem;
   color: $text-muted;
 
   time { color: $text-muted; }
@@ -109,24 +47,26 @@
 .post-content {
   h1, h2, h3, h4, h5, h6 {
     font-family: $font-mono;
-    font-weight: 600;
-    color: $accent;
+    font-weight: 700;
+    color: $text;
     line-height: 1.3;
     margin-top: 2.25rem;
     margin-bottom: 0.75rem;
-    letter-spacing: -0.01em;
   }
 
-  h1 { font-size: 1.6rem; }
-  h2 { font-size: 1.3rem; }
-  h3 { font-size: 1.1rem; }
-  h4 { font-size: 1rem; }
-  h5, h6 { font-size: 0.95rem; }
+  h1 { font-size: 2.1rem; }
+  h2 { font-size: 1.75rem; }
+  h3 { font-size: 1.45rem; }
+  h4 { font-size: 1.25rem; }
+  h5, h6 { font-size: 1.1rem; }
 
   p {
     margin-bottom: 1.4rem;
     color: $text;
     text-align: justify;
+    -webkit-hyphens: auto;
+    -ms-hyphens: auto;
+    hyphens: auto;
   }
 
   a {
@@ -174,7 +114,7 @@
     border: 1px solid $border;
   }
 
-  // Code blocks - raised above CRT scanline/vignette overlays (z-index 20/21).
+  // Code blocks.
   pre {
     background: $bg-elevated;
     border: 1px solid $border;
@@ -182,8 +122,6 @@
     padding: 1.25rem 1.5rem;
     margin: 1.75rem 0;
     line-height: 1.6;
-    position: relative;
-    z-index: 22;
     overflow-x: auto;
 
     code {
@@ -204,12 +142,11 @@
 
     th {
       font-family: $font-mono;
-      font-size: 0.78rem;
+      font-size: 0.85rem;
       text-align: left;
       padding: 0.6rem 0.75rem;
       color: $text-muted;
       border-bottom: 1px solid $border;
-      letter-spacing: 0.04em;
     }
 
     td {
@@ -221,12 +158,10 @@
     tr:last-child td { border-bottom: none; }
   }
 
-  // Images - raised above CRT scanline/vignette overlays (z-index 20/21).
+  // Images.
   img {
     border-radius: 4px;
     margin: 1.75rem auto;
-    position: relative;
-    z-index: 22;
   }
 
   // Figures (centered shortcode).
@@ -240,16 +175,14 @@
 
     figcaption {
       font-family: $font-mono;
-      font-size: 0.78rem;
+      font-size: 0.85rem;
       color: $text-muted;
     }
   }
 
-  // Video (video shortcode) - raised above CRT overlays.
+  // Video (video shortcode).
   .video-wrapper {
     margin: 1.75rem 0;
-    position: relative;
-    z-index: 22;
 
     video {
       width: 100%;
@@ -259,47 +192,12 @@
 
     .video-caption {
       font-family: $font-mono;
-      font-size: 0.78rem;
+      font-size: 0.85rem;
       color: $text-muted;
       margin-top: 0.5rem;
       text-align: center;
     }
   }
-}
-
-// Post Footer / Tags.
-
-.post-footer {
-  margin-top: 2.5rem;
-  padding-top: 1.5rem;
-  border-top: 1px solid $border;
-}
-
-.post-tags {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 0.5rem;
-}
-
-.tag {
-  font-family: $font-mono;
-  font-size: 0.75rem;
-  color: $accent;
-  border: 1px solid rgba($accent, 0.25);
-  padding: 0.2rem 0.6rem;
-  border-radius: 3px;
-  transition: color 0.15s ease, border-color 0.15s ease;
-
-  &:hover {
-    color: $accent-hover;
-    border-color: rgba($accent, 0.5);
-  }
-}
-
-// About page.
-
-.container-wide .post-content {
-  font-size: 0.95rem;
 }
 
 // About page social links.
@@ -313,7 +211,7 @@
 
   a {
     font-family: $font-mono;
-    font-size: 0.85rem;
+    font-size: 0.9rem;
     color: $text-muted;
     text-decoration: none;
     transition: color 0.15s ease;
@@ -335,7 +233,7 @@
     font-family: $font-mono;
     font-size: 4rem;
     font-weight: 700;
-    color: $accent;
+    color: $text;
     line-height: 1;
     margin-bottom: 0.75rem;
   }

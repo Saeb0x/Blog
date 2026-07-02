@@ -7,13 +7,12 @@
     {{ range .Pages }}
     <article class="post-item">
       <a href="{{ .Permalink }}" class="post-item-link">
-        <span class="post-prompt">></span>
         <time class="post-date" datetime="{{ .Date.Format "2006-01-02" }}">{{ .Date.Format "2006-01-02" }}</time>
         <span class="post-title">{{ .Title }}</span>
       </a>
     </article>
     {{ else }}
-    <p class="no-posts">// no posts yet</p>
+    <p class="no-posts">No posts yet.</p>
     {{ end }}
   </section>
 </div>

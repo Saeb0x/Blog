@@ -10,22 +10,19 @@
   padding: 0;
 }
 
-html,
-body {
-  height: 100%;
-  overflow: hidden;
-}
-
 html {
-  font-size: 17px;
+  font-size: 15px;
   -webkit-text-size-adjust: 100%;
   scroll-behavior: smooth;
 }
 
 body {
-  background: $room-bg;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  background: $bg;
   color: $text;
-  font-family: $font-sans;
+  font-family: $font-mono;
   line-height: 1.75;
 }
 
@@ -58,11 +55,6 @@ hr {
 .container {
   max-width: $max-width;
   margin: 0 auto;
-  padding: 0 $gap;
-}
-
-.container-wide {
-  max-width: 100%;
   padding: 0 $gap;
 }
 
