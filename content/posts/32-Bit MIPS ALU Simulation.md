@@ -2,27 +2,26 @@
 title: "32-Bit MIPS ALU: Simulation"
 date: 2024-01-09
 description: "Simulating and validating the 32-bit MIPS ALU on DE1 and DE2 FPGA boards using ModelSim and seven-segment display output."
-tags: ["vhdl", "computer architecture", "digital design", "mips", "fpga"]
 draft: false
 ---
 
-I recently completed the {{< coloredLink url="https://saebnaser.blog/post/32-bit-mips-alu-design/" color="#FEFE54" >}}design and implementation{{< /coloredLink >}} of my Final Year Project. However, during the simulation phase near the end, I realized that the Cyclone V SX SoC Development Kit wasn't the best match for this type of project. As I said I would in my previous post, I discussed this with my supervisor, and fortunately, I got my hands on not only the {{< coloredLink url="https://www.terasic.com.tw/cgi-bin/page/archive.pl?No=83" color="#FEFE54" >}}DE1{{< /coloredLink >}} board but also the {{< coloredLink url="https://www.terasic.com.tw/cgi-bin/page/archive.pl?No=30" color="#FEFE54" >}}DE2{{< /coloredLink >}}.
+I recently completed the {{< coloredLink url="https://saebnaser.blog/post/32-bit-mips-alu-design/" >}}design and implementation{{< /coloredLink >}} of my Final Year Project. However, during the simulation phase near the end, I realized that the Cyclone V SX SoC Development Kit wasn't the best match for this type of project. As I said I would in my previous post, I discussed this with my supervisor, and fortunately, I got my hands on not only the {{< coloredLink url="https://www.terasic.com.tw/cgi-bin/page/archive.pl?No=83" >}}DE1{{< /coloredLink >}} board but also the {{< coloredLink url="https://www.terasic.com.tw/cgi-bin/page/archive.pl?No=30" >}}DE2{{< /coloredLink >}}.
 
-I want to dedicate this post not only to testing and simulating my FYP design, but also to sharing my approach to using {{< coloredLink url="https://saebnaser.blog/post/32-bit-mips-alu-design/#fpga" color="#FEFE54" >}}FPGA{{< /coloredLink >}} development boards and how I deal with them.
+I want to dedicate this post not only to testing and simulating my FYP design, but also to sharing my approach to using {{< coloredLink url="https://saebnaser.blog/post/32-bit-mips-alu-design/#fpga" >}}FPGA{{< /coloredLink >}} development boards and how I deal with them.
 
-1. [{{< colour color="#FEFE54" >}}Knowing The Board{{< /colour >}}](#knowing-the-board)
-2. [{{< colour color="#FEFE54" >}}Burning VHDL{{< /colour >}}](#burning-vhdl)
-3. [{{< colour color="#FEFE54" >}}Back To 32-Bit MIPS ALU{{< /colour >}}](#back-to-32-bit-mips-alu)
-4. [{{< colour color="#FEFE54" >}}Conclusion{{< /colour >}}](#conclusion)
-5. [{{< colour color="#FEFE54" >}}Source Code{{< /colour >}}](#source-code)
+1. [{{< colour >}}Knowing The Board{{< /colour >}}](#knowing-the-board)
+2. [{{< colour >}}Burning VHDL{{< /colour >}}](#burning-vhdl)
+3. [{{< colour >}}Back To 32-Bit MIPS ALU{{< /colour >}}](#back-to-32-bit-mips-alu)
+4. [{{< colour >}}Conclusion{{< /colour >}}](#conclusion)
+5. [{{< colour >}}Source Code{{< /colour >}}](#source-code)
 
 I have experience with the DE1 board from my Digital Computer Design course labs. It's a solid and reliable board, easy to work with. But after  giving it some thought, I realized that choosing the DE1 over the DE2 would be a big mistake. The DE2 board offers more advanced features and higher performance, like an improved version of the DE1, even down to its layout. That's why I'll go with it.
 
 #### Knowing The Board
 
-Starting with the {{< coloredLink url="https://www.terasic.com.tw/cgi-bin/page/archive_download.pl?Language=English&No=30&FID=ab73908ea64e51be175534c8101942b7" color="#FEFE54" >}}User Manual{{< /coloredLink >}} is a smart move to know the board. I usually just skim through the important parts instead of reading it all in detail. The most important aspects for us are understanding the layout, components, and pin assignments of the board.
+Starting with the {{< coloredLink url="https://www.terasic.com.tw/cgi-bin/page/archive_download.pl?Language=English&No=30&FID=ab73908ea64e51be175534c8101942b7" >}}User Manual{{< /coloredLink >}} is a smart move to know the board. I usually just skim through the important parts instead of reading it all in detail. The most important aspects for us are understanding the layout, components, and pin assignments of the board.
 
-Pin assignments determine which physical pins on the FPGA are connected to specific components, so that we can map our logical design to physical hardware. For example, in DE2 board, we have 18 switches. By referring to the {{< coloredLink url="https://www.terasic.com.tw/cgi-bin/page/archive_download.pl?Language=English&No=30&FID=3bc5410e25f903b5d6210c07ff584eb2" color="#FEFE54" >}}Pin Table{{< /coloredLink >}}, we can find their pin assignments. Now that everything makes sense, we're good to go.
+Pin assignments determine which physical pins on the FPGA are connected to specific components, so that we can map our logical design to physical hardware. For example, in DE2 board, we have 18 switches. By referring to the {{< coloredLink url="https://www.terasic.com.tw/cgi-bin/page/archive_download.pl?Language=English&No=30&FID=3bc5410e25f903b5d6210c07ff584eb2" >}}Pin Table{{< /coloredLink >}}, we can find their pin assignments. Now that everything makes sense, we're good to go.
 
 #### Burning VHDL
 
@@ -56,7 +55,7 @@ begin
 	end process;
 end Behavioral;
 ````
-Using {{< coloredLink url="https://www.intel.com/content/www/us/en/software-kit/711791/intel-quartus-ii-web-edition-design-software-version-13-0sp1-for-windows.html" color="#FEFE54" >}}Intel Quartus Web Edition{{< /coloredLink >}} this time is a good choice. Following the user manual, it's important to select the device when creating a new project. Then, we assign the logical ports to physical pins on the board using the pin planner, following the pin table as before.
+Using {{< coloredLink url="https://www.intel.com/content/www/us/en/software-kit/711791/intel-quartus-ii-web-edition-design-software-version-13-0sp1-for-windows.html" >}}Intel Quartus Web Edition{{< /coloredLink >}} this time is a good choice. Following the user manual, it's important to select the device when creating a new project. Then, we assign the logical ports to physical pins on the board using the pin planner, following the pin table as before.
 
 {{< figure src="/images/PinPlanner.png" alt="Pin Planner Screenshot" width="700px" height="700px">}}
 
@@ -137,17 +136,17 @@ While this single-cycle approach simplifies the control logic and makes it easie
 
 Let me break down everything that should happen in a single cycle:
 
-1. {{< colour color="#FEFE54" >}}Instruction Fetch{{< /colour >}}: The instruction is fetched from the Instruction Memory, where our test program is.
+1. {{< colour >}}Instruction Fetch{{< /colour >}}: The instruction is fetched from the Instruction Memory, where our test program is.
 
-2. {{< colour color="#FEFE54" >}}Instruction Decode{{< /colour >}}: The fetched instruction is decoded to understand what operation is to be performed and which registers are involved.
+2. {{< colour >}}Instruction Decode{{< /colour >}}: The fetched instruction is decoded to understand what operation is to be performed and which registers are involved.
 
-3. {{< colour color="#FEFE54" >}}Execute{{< /colour >}}: The operation specified by the instruction is executed, which might involve arithmetic or logical operations in the ALU, address calculation for memory operations, etc.
+3. {{< colour >}}Execute{{< /colour >}}: The operation specified by the instruction is executed, which might involve arithmetic or logical operations in the ALU, address calculation for memory operations, etc.
 
-4. {{< colour color="#FEFE54" >}}Memory Access (if needed){{< /colour >}}: Data is read from or written to the memory.
+4. {{< colour >}}Memory Access (if needed){{< /colour >}}: Data is read from or written to the memory.
 
-5. {{< colour color="#FEFE54" >}}Write-back{{< /colour >}}: The result of the execution is written back to a register if required by the instruction.
+5. {{< colour >}}Write-back{{< /colour >}}: The result of the execution is written back to a register if required by the instruction.
 
-Since I didn't write a test bench for the {{< coloredLink url="https://saebnaser.blog/post/32-bit-mips-alu-design/#simulation-on-cyclone-v-soc-development-kit" color="#FEFE54" >}}top level{{< /coloredLink >}} module I implemented in the design, let's write one now.
+Since I didn't write a test bench for the {{< coloredLink url="https://saebnaser.blog/post/32-bit-mips-alu-design/#simulation-on-cyclone-v-soc-development-kit" >}}top level{{< /coloredLink >}} module I implemented in the design, let's write one now.
 ```vhdl
 library IEEE;
 use IEEE.std_logic_1164.all;
@@ -201,30 +200,30 @@ This test bench simulates the operation of the single-cycle MIPS CPU, focusing o
 {{< figure src="/images/TopLevel_tb_Waveform.png" alt="Top Level Testbench Waveform" width="700px" height="700px">}}
 
 >##### Note
->I screenshotted the waveform from {{< coloredLink url="https://www.intel.com/content/www/us/en/software-kit/750368/modelsim-intel-fpgas-standard-edition-software-version-18-1.html" color="#FEFE54" >}}Intel ModelSim{{< /coloredLink >}} software, as I couldn't find a better way to export it in higher quality. For better viewing, open it in a new tab. Feedback from experienced users on waveform exporting is welcome.
+>I screenshotted the waveform from {{< coloredLink url="https://www.intel.com/content/www/us/en/software-kit/750368/modelsim-intel-fpgas-standard-edition-software-version-18-1.html" >}}Intel ModelSim{{< /coloredLink >}} software, as I couldn't find a better way to export it in higher quality. For better viewing, open it in a new tab. Feedback from experienced users on waveform exporting is welcome.
 >
 
-Let's take the first full cycle of our execution, which is according to our test program inside our Instruction Memory is an I-type instruction {{<colour color="#FEFE54">}}addi $R1, $R0, 30{{< /colour >}}. 
+Let's take the first full cycle of our execution, which is according to our test program inside our Instruction Memory is an I-type instruction {{<colour>}}addi $R1, $R0, 30{{< /colour >}}. 
 
 {{< figure src="/images/InstructionMemory_addi.png" alt="I-type instruction addi in the Instruction Memory" width="500px" height="500px">}}
 
-As I detailed in my design post, each MIPS instruction spans 32 bits, which is equivalent to 4 bytes. To accommodate this in the Instruction Memory, I allocated four consecutive memory addresses for each individual instruction. Similarly, the Assembler operates by encoding each instruction into 4 bytes to align with our design. It's important to note that if an instruction begins at address 0, it will occupy the bytes at addresses 0, 1, 2, and 3. Hence, to move to the next instruction, we increment the program counter by 4. For further details, refer to the {{< coloredLink url="https://saebnaser.blog/post/32-bit-mips-alu-design/#instruction-memory" color="#FEFE54" >}}Instruction Memory{{< /coloredLink >}} section in my previous blog post.
+As I detailed in my design post, each MIPS instruction spans 32 bits, which is equivalent to 4 bytes. To accommodate this in the Instruction Memory, I allocated four consecutive memory addresses for each individual instruction. Similarly, the Assembler operates by encoding each instruction into 4 bytes to align with our design. It's important to note that if an instruction begins at address 0, it will occupy the bytes at addresses 0, 1, 2, and 3. Hence, to move to the next instruction, we increment the program counter by 4. For further details, refer to the {{< coloredLink url="https://saebnaser.blog/post/32-bit-mips-alu-design/#instruction-memory" >}}Instruction Memory{{< /coloredLink >}} section in my previous blog post.
 
 {{< figure src="/images/TopLevel_tb_Waveform_addi.png" alt="addi waveform" width="700px" height="700px">}}
 
-Now we can clearly see that our complete 32-bit instruction is the concatenation of the 4 bytes occupying the first 4 addresses: 0, 1, 2, and 3, resulting in the full instruction {{<colour color="#FEFE54">}}00100000000000010000000000011110{{< /colour >}}.
+Now we can clearly see that our complete 32-bit instruction is the concatenation of the 4 bytes occupying the first 4 addresses: 0, 1, 2, and 3, resulting in the full instruction {{<colour>}}00100000000000010000000000011110{{< /colour >}}.
 
-According to the way I designed the {{< coloredLink url="https://saebnaser.blog/post/32-bit-mips-alu-design/#control-unit" color="#FEFE54" >}}Control Unit{{< /coloredLink >}}, which generates control signals for various components within the processor based on our input instruction (addi in this case), we should expect an 11-bit data signal to set the control signals. In our case, the data signal is {{<colour color="#FEFE54">}}000000000011{{< /colour >}}, which perfectly aligns with our implementation.
+According to the way I designed the {{< coloredLink url="https://saebnaser.blog/post/32-bit-mips-alu-design/#control-unit" >}}Control Unit{{< /coloredLink >}}, which generates control signals for various components within the processor based on our input instruction (addi in this case), we should expect an 11-bit data signal to set the control signals. In our case, the data signal is {{<colour>}}000000000011{{< /colour >}}, which perfectly aligns with our implementation.
 
 {{< figure src="/images/ControlUnit_addi.png" alt="addi instruction data signal" width="700px" height="700px">}}
 
-Returning to our primary focus, the ALU, we observe that the ALUOp, indicating the ALU operation to be performed, is set to {{<colour color="#FEFE54">}}0000{{< /colour >}}. This precisely matches our design, where 0000 signifies addition operations.
+Returning to our primary focus, the ALU, we observe that the ALUOp, indicating the ALU operation to be performed, is set to {{<colour>}}0000{{< /colour >}}. This precisely matches our design, where 0000 signifies addition operations.
 
-Moving to the next instruction {{<colour color="#FEFE54">}}sw $R1,0($R0){{< /colour >}}.
+Moving to the next instruction {{<colour>}}sw $R1,0($R0){{< /colour >}}.
 
 {{< figure src="/images/Testbench_tb_SimulationWaveform_storeword.png" alt="store word (sw) waveform" width="700px" height="700px">}}
 
-The full instruction, {{<colour color="#FEFE54">}}10101100000000010000000000000000{{< /colour >}}, perfectly aligns with our layout in the Instruction Memory. Additionally, the data signal, {{<colour color="#FEFE54">}}000000000110{{< /colour >}}, matches the control signal settings in the Control Unit. Regarding the ALUOp, it remains at 0000 because this instruction is a Memory write (store word), not an ALU operation. However, if you review the waveform, you'll notice that the ALUOp changes multiple times, indicating that we encountered 5 ALU operations in our test program.
+The full instruction, {{<colour>}}10101100000000010000000000000000{{< /colour >}}, perfectly aligns with our layout in the Instruction Memory. Additionally, the data signal, {{<colour>}}000000000110{{< /colour >}}, matches the control signal settings in the Control Unit. Regarding the ALUOp, it remains at 0000 because this instruction is a Memory write (store word), not an ALU operation. However, if you review the waveform, you'll notice that the ALUOp changes multiple times, indicating that we encountered 5 ALU operations in our test program.
 
 With our DE2 board, we can supply a 50MHz clock, achieving the same results.
 
@@ -232,7 +231,7 @@ With our DE2 board, we can supply a 50MHz clock, achieving the same results.
 This marks the conclusion of one of the most enjoyable and challenging projects I've worked on. Undoubtedly, in the days to come, I'll encounter numerous bugs and mistakes, as is typical with any project. I'll do my best to update these blogs regularly, but for now, that's all.
 
 #### Source Code
-You can find all the code {{< coloredLink url="https://github.com/Saeb0x/MIPS32-ALU" color="#FEFE54" >}}here{{< /coloredLink >}}.
+You can find all the code {{< coloredLink url="https://github.com/Saeb0x/MIPS32-ALU" >}}here{{< /coloredLink >}}.
 
 ***
 Last Edited: May 24, 2026

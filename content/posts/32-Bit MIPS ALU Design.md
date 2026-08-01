@@ -2,41 +2,40 @@
 title: "32-Bit MIPS ALU: Design"
 date: 2024-01-07
 description: "Designing and implementing a 32-bit MIPS ALU in VHDL as part of a Final Year Project, targeting the DE1 FPGA board."
-tags: ["vhdl", "computer architecture", "digital design", "mips", "fpga"]
 draft: false
 ---
 
-In the {{< coloredLink url="https://saebnaser.blog/post/32-bit-mips-alu-motivation/" color="#FEFE54" >}}motivation post{{< /coloredLink >}}, I basically laid down the groundwork. I talked about all the basic stuff and essential concepts that we need to know before diving into the design. It was a good refresher for me as well.
+In the {{< coloredLink url="https://saebnaser.blog/post/32-bit-mips-alu-motivation/" >}}motivation post{{< /coloredLink >}}, I basically laid down the groundwork. I talked about all the basic stuff and essential concepts that we need to know before diving into the design. It was a good refresher for me as well.
 
 Now, let's shift gears a bit. I want to make one thing clear before doing anything: my Final Year Project isn't about building a MIPS processor from scratch. Instead, it's all about crafting an ALU (Arithmetic Logic Unit) that can meet the demands of our hardware realization of the MIPS CPU datapath. In order to check if our designed ALU works fine, I'll need to also design a basic MIPS architecture to ensure the ALU fits into it seamlessly. However, I'll be upfront: my primary focus will be on the ALU itself. That said, understanding how the ALU integrates into the MIPS architecture is essential. It's like fitting a piece into a puzzle: each component needs to align perfectly for the whole system to function smoothly. So, while I won't delve too deeply into the intricacies of MIPS, I'll provide enough context to illustrate how our ALU fits into the bigger picture.
 
-1. [{{< colour color="#FEFE54" >}}Arithmetic Logic Unit{{< /colour >}}](#arithmetic-logic-unit)
-	- [{{< colour color="#FEFE54" >}}ALU Operations{{< /colour >}}](#alu-operations)
-	- [{{< colour color="#FEFE54" >}}Flag Bits{{< /colour >}}](#flag-bits)
-	- [{{< colour color="#FEFE54" >}}Design Circuit{{< /colour >}}](#design-circuit)
-2. [{{< colour color="#FEFE54" >}}FPGA{{< /colour >}}](#fpga)
-	- [{{< colour color="#FEFE54" >}}FPGA Versus Software Programming{{< /colour >}}](#fpga-versus-software-programming)
-	- [{{< colour color="#FEFE54" >}}VHDL Implementation{{< /colour >}}](#vhdl-implementation)
-		- [{{< colour color="#FEFE54" >}}ALU{{< /colour >}}](#alu)
-3. [{{< colour color="#FEFE54" >}}Describing the Single Cycle MIPS CPU{{< /colour >}}](#describing-the-single-cycle-mips-cpu)
-	- [{{< colour color="#FEFE54" >}}Program Counter (PC){{< /colour >}}](#program-counter)
-	- [{{< colour color="#FEFE54" >}}Adder{{< /colour >}}](#adder)
-	- [{{< colour color="#FEFE54" >}}Instruction Memory{{< /colour >}}](#instruction-memory)
-	- [{{< colour color="#FEFE54" >}}Multiplexer (MUX) {{< /colour >}}](#multiplexer)
-	- [{{< colour color="#FEFE54" >}}Registers{{< /colour >}}](#registers)
-	- [{{< colour color="#FEFE54" >}}Sign Extend{{< /colour >}}](#sign-extend)
-	- [{{< colour color="#FEFE54" >}}Shift Left 2{{< /colour >}}](#shift-left-2)
-	- [{{< colour color="#FEFE54" >}}Data Memory{{< /colour >}}](#data-memory)
-	- [{{< colour color="#FEFE54" >}}Control Unit{{< /colour >}}](#control-unit)
-	- [{{< colour color="#FEFE54" >}}Data Path{{< /colour >}}](#data-path)
-4. 	[{{< colour color="#FEFE54" >}}32-bit MIPS Assembler [C++]{{< /colour >}}](#32-bit-mips-assembler)
-5. [{{< colour color="#FEFE54" >}}Simulation on Cyclone V SoC Development Kit{{< /colour >}}](#simulation-on-cyclone-v-soc-development-kit)
-6. [{{< colour color="#FEFE54" >}}Source Code{{< /colour >}}](#source-code)
+1. [{{< colour >}}Arithmetic Logic Unit{{< /colour >}}](#arithmetic-logic-unit)
+	- [{{< colour >}}ALU Operations{{< /colour >}}](#alu-operations)
+	- [{{< colour >}}Flag Bits{{< /colour >}}](#flag-bits)
+	- [{{< colour >}}Design Circuit{{< /colour >}}](#design-circuit)
+2. [{{< colour >}}FPGA{{< /colour >}}](#fpga)
+	- [{{< colour >}}FPGA Versus Software Programming{{< /colour >}}](#fpga-versus-software-programming)
+	- [{{< colour >}}VHDL Implementation{{< /colour >}}](#vhdl-implementation)
+		- [{{< colour >}}ALU{{< /colour >}}](#alu)
+3. [{{< colour >}}Describing the Single Cycle MIPS CPU{{< /colour >}}](#describing-the-single-cycle-mips-cpu)
+	- [{{< colour >}}Program Counter (PC){{< /colour >}}](#program-counter)
+	- [{{< colour >}}Adder{{< /colour >}}](#adder)
+	- [{{< colour >}}Instruction Memory{{< /colour >}}](#instruction-memory)
+	- [{{< colour >}}Multiplexer (MUX) {{< /colour >}}](#multiplexer)
+	- [{{< colour >}}Registers{{< /colour >}}](#registers)
+	- [{{< colour >}}Sign Extend{{< /colour >}}](#sign-extend)
+	- [{{< colour >}}Shift Left 2{{< /colour >}}](#shift-left-2)
+	- [{{< colour >}}Data Memory{{< /colour >}}](#data-memory)
+	- [{{< colour >}}Control Unit{{< /colour >}}](#control-unit)
+	- [{{< colour >}}Data Path{{< /colour >}}](#data-path)
+4. 	[{{< colour >}}32-bit MIPS Assembler [C++]{{< /colour >}}](#32-bit-mips-assembler)
+5. [{{< colour >}}Simulation on Cyclone V SoC Development Kit{{< /colour >}}](#simulation-on-cyclone-v-soc-development-kit)
+6. [{{< colour >}}Source Code{{< /colour >}}](#source-code)
 
 #### Arithmetic Logic Unit
-At its core, the ALU is a combinational circuit embedded within a computer's central processing unit (CPU) that executes arithmetic and bitwise functions on {{< colour color="#FEFE54" >}}integer{{< /colour >}} binary variables. In contrast, a floating-point unit (FPU) handles floating-point values.
+At its core, the ALU is a combinational circuit embedded within a computer's central processing unit (CPU) that executes arithmetic and bitwise functions on {{< colour >}}integer{{< /colour >}} binary variables. In contrast, a floating-point unit (FPU) handles floating-point values.
 
-From the ALU's point of view, a floating-point number is a series of random bits. Since floating point numbers are base two numbers with a mantissa and an exponent, you can always perform floating point operations using the ALU, but it's slower than using a dedicated hardware FPU. You don't always need a dedicated FPU. For example, GCC (GNU Compiler Collection) includes a {{< coloredLink url="https://gcc.gnu.org/onlinedocs/gccint/Soft-float-library-routines.html" color="#FEFE54" >}}software emulation layer{{< /coloredLink >}} for floating-point operations. This layer enables processors without FPU hardware to execute floating-point calculations using software routines. However, {{< colour color="#FEFE54" >}}software emulation tends to be slower than hardware-based processing{{< /colour >}}.
+From the ALU's point of view, a floating-point number is a series of random bits. Since floating point numbers are base two numbers with a mantissa and an exponent, you can always perform floating point operations using the ALU, but it's slower than using a dedicated hardware FPU. You don't always need a dedicated FPU. For example, GCC (GNU Compiler Collection) includes a {{< coloredLink url="https://gcc.gnu.org/onlinedocs/gccint/Soft-float-library-routines.html" >}}software emulation layer{{< /coloredLink >}} for floating-point operations. This layer enables processors without FPU hardware to execute floating-point calculations using software routines. However, {{< colour >}}software emulation tends to be slower than hardware-based processing{{< /colour >}}.
 
 #### ALU Operations
 In designing my ALU, I aim to support 9 fundamental operations (Addition, Subtraction, AND, OR, XOR, NAND, NOR, Shift Left Logical, and Shift Right Logical) in a combinational circuit that calculates a 32-bit output based on two 32-bit inputs and a 4-bit input specifying the ALU operation to perform. The ALU also computes three flag bits (Zero, Carry, and Overflow).
@@ -51,13 +50,13 @@ Now this is just an interface for the ALU: what goes in, what comes out. It also
 
  Just a reminder on the difference between a carry and an overflow:
  
- - {{< colour color="#FEFE54" >}}Carry{{< /colour >}}: Marks an outputted carry in the most-significant bit (MSB) due to limited bits.
- - {{< colour color="#FEFE54" >}}Overflow{{< /colour >}}: Sign of output differs from inputs, signaling a change in magnitude (e.g., sum of two positives resulting in a negative).
+ - {{< colour >}}Carry{{< /colour >}}: Marks an outputted carry in the most-significant bit (MSB) due to limited bits.
+ - {{< colour >}}Overflow{{< /colour >}}: Sign of output differs from inputs, signaling a change in magnitude (e.g., sum of two positives resulting in a negative).
 
 #### Design Circuit
-While the ultimate goal of my FYP typically involves using VHDL for practical integration into a larger system (MIPS), my focus here is on gaining a deep understanding of the inner workings of the ALU. By designing it in {{< coloredLink url="http://www.cburch.com/logisim/" color="#FEFE54" >}}Logisim{{< /coloredLink >}} (A simulation environment for logic devices), we can grasp the fundamental concepts and operations that govern its functionality. This hands-on approach allows us to visualize and manipulate the digital circuitry. So, while the journey begins with a Logisim implementation for educational purposes, it sets the stage for a more practical application of VHDL later.
+While the ultimate goal of my FYP typically involves using VHDL for practical integration into a larger system (MIPS), my focus here is on gaining a deep understanding of the inner workings of the ALU. By designing it in {{< coloredLink url="http://www.cburch.com/logisim/" >}}Logisim{{< /coloredLink >}} (A simulation environment for logic devices), we can grasp the fundamental concepts and operations that govern its functionality. This hands-on approach allows us to visualize and manipulate the digital circuitry. So, while the journey begins with a Logisim implementation for educational purposes, it sets the stage for a more practical application of VHDL later.
 
-Starting with a {{< colour color="#FEFE54" >}}1-Bit{{< /colour >}} ALU enables a systematic understanding and testing of operations before scaling up.
+Starting with a {{< colour >}}1-Bit{{< /colour >}} ALU enables a systematic understanding and testing of operations before scaling up.
 
 {{< figure src="/images/1-Bit_ALU_PrinterView.png" alt="1-Bit ALU Circuit: Printer View" width="700px" height="700px">}}
 
@@ -77,7 +76,7 @@ Instead of having the 1-Bit ALU viewed as a circuit layout, we can capture it in
 
 {{< figure src="/images/1-Bit ALU_Overall Object.png" alt="1-Bit ALU as an Overall Object" width="300px" height="300px">}}
 
-Now, to get our fully operational {{< colour color="#FEFE54" >}}32-Bit{{< /colour >}} ALU that performs our designated operations, we simply cascade 32 units of the 1-Bit ALU and ensure the correct connections between them.
+Now, to get our fully operational {{< colour >}}32-Bit{{< /colour >}} ALU that performs our designated operations, we simply cascade 32 units of the 1-Bit ALU and ensure the correct connections between them.
 
 {{< figure src="/images/32-Bit_ALU_PrinterView.png" alt="32-Bit ALU Circuit: Printer View" width="700px" height="700px">}}
 
@@ -95,7 +94,7 @@ Now that things are starting to make sense, let's move on to the next phase.
 
 I've always wanted to mess around with an FPGA, but many things have held me back. First off, they're expensive (like, seriously expensive). Most FPGA development kits run over $100, and they often come with a bunch of features I don't even need. And to top it off, some of them don't even offer open-source toolchains.
 
-Luckily, my supervisor came through with a {{< coloredLink url="https://www.intel.com/content/www/us/en/products/details/fpga/development-kits/cyclone/v-sx.html" color="#FEFE54" >}}Cyclone V SX SoC Development kit{{< /coloredLink >}}, which is more than great. Now our project is doable.
+Luckily, my supervisor came through with a {{< coloredLink url="https://www.intel.com/content/www/us/en/products/details/fpga/development-kits/cyclone/v-sx.html" >}}Cyclone V SX SoC Development kit{{< /coloredLink >}}, which is more than great. Now our project is doable.
 
 #### FPGA Versus Software Programming
 
@@ -171,7 +170,7 @@ end Behavioral;
 ```
 Now, based on the given control signal, the ALU will perform arithmetic and logical operations on the two input operands.
 
-To validate the functionality and ensure everything works fine, we can write a {{< colour color="#FEFE54" >}}testbench{{< /colour >}}. Testbenches are essential in VHDL Design. They serve as a simulation environment, providing input stimuli to the design under test (DUT) and evaluating its responses.
+To validate the functionality and ensure everything works fine, we can write a {{< colour >}}testbench{{< /colour >}}. Testbenches are essential in VHDL Design. They serve as a simulation environment, providing input stimuli to the design under test (DUT) and evaluating its responses.
 
 ```vhdl
 library IEEE;
@@ -272,16 +271,16 @@ begin
     end process stimulus;    
 end Testbench;
 ```
-##### {{< colour color="#FEFE54" >}}Simulation Waveform{{< /colour >}}
+##### {{< colour >}}Simulation Waveform{{< /colour >}}
 
 {{< figure src="/images/Testbench_SimulationWaveform.png" alt="Simulation waveform for the Testbench" width="900px" height="900px">}}
 
 >##### Note
->I screenshotted the waveform from {{< coloredLink url="https://www.intel.com/content/www/us/en/software-kit/750368/modelsim-intel-fpgas-standard-edition-software-version-18-1.html" color="#FEFE54" >}}Intel ModelSim{{< /coloredLink >}} software, as I couldn't find a better way to export it in higher quality. For better viewing, open it in a new tab. Feedback from experienced users on waveform exporting is welcome.
+>I screenshotted the waveform from {{< coloredLink url="https://www.intel.com/content/www/us/en/software-kit/750368/modelsim-intel-fpgas-standard-edition-software-version-18-1.html" >}}Intel ModelSim{{< /coloredLink >}} software, as I couldn't find a better way to export it in higher quality. For better viewing, open it in a new tab. Feedback from experienced users on waveform exporting is welcome.
 >
 
 #### Describing the Single Cycle MIPS CPU
-I talked about {{< coloredLink url="https://saebnaser.blog/post/32-bit-mips-alu-motivation/#mips" color="#FEFE54" >}}MIPS{{< /coloredLink >}} in details in my previous motivation blog post, including the key concepts of the architecture, the three instruction formats, and building a processor to execute MIPS instructions.
+I talked about {{< coloredLink url="https://saebnaser.blog/post/32-bit-mips-alu-motivation/#mips" >}}MIPS{{< /coloredLink >}} in details in my previous motivation blog post, including the key concepts of the architecture, the three instruction formats, and building a processor to execute MIPS instructions.
 
 I'll be following this diagram in my implementation.
 
@@ -471,7 +470,7 @@ To simplify it, the instruction memory will retrieve a full instruction by doing
 2. The memory will fetch four successive bytes starting from this address.
 3. These bytes are then concatenated in sequences to reconstruct the full 32-bit instruction.
 
-The instruction memory contains a test program, but you can define your own program instructions by checking the {{< coloredLink url="#32-bit-mips-assembler" color="#FEFE54" >}}32-bit MIPS Assembler{{< /coloredLink >}}.
+The instruction memory contains a test program, but you can define your own program instructions by checking the {{< coloredLink url="#32-bit-mips-assembler" >}}32-bit MIPS Assembler{{< /coloredLink >}}.
 
 #### Multiplexer
 
@@ -586,7 +585,7 @@ If the 16-bit input has an MSB of 0 (positive), it prepends 16 zero bits to it, 
 
 #### Shift Left 2 
 
-Shift Left 2 module shifts the input value to the left by two positions, effectively multiplying it by 4. If you read the motivation post, you would remember that when I talked about {{< coloredLink url="https://saebnaser.blog/post/32-bit-mips-alu-motivation/#bit-shifting" color="#FEFE54" >}}bit shifting{{< /coloredLink >}}, I mentioned that left shifting multiplies the number by 2 for each shift, while right shifting divides it by 2.
+Shift Left 2 module shifts the input value to the left by two positions, effectively multiplying it by 4. If you read the motivation post, you would remember that when I talked about {{< coloredLink url="https://saebnaser.blog/post/32-bit-mips-alu-motivation/#bit-shifting" >}}bit shifting{{< /coloredLink >}}, I mentioned that left shifting multiplies the number by 2 for each shift, while right shifting divides it by 2.
 
 ```vhdl
 library IEEE;
@@ -751,7 +750,7 @@ end Behavioral;
 The control unit decodes each instruction to generate control signals that direct the processor's operation. It identifies the operation type, such as arithmetic or branching, and activates the necessary components.
 
 >##### Note
-> Keep in mind that all MIPS instructions are encoded in binary, and  this is what the {{< coloredLink url="#32-bit-mips-assembler" color="#FEFE54" >}}32-bit MIPS Assembler{{< /coloredLink >}} handles. All instructions have an opcode (op) that specifies the operation, which occupies the first 6 bits of the instruction. For {{< coloredLink url="https://saebnaser.blog/post/32-bit-mips-alu-motivation/#three-basic-instruction-formats" color="#FEFE54" >}}R-type{{< /coloredLink >}} instructions, such as addition, subtraction, and logical operations, it is also necessary to examine the last 6 bits (function field) to determine the specific operation being performed.
+> Keep in mind that all MIPS instructions are encoded in binary, and  this is what the {{< coloredLink url="#32-bit-mips-assembler" >}}32-bit MIPS Assembler{{< /coloredLink >}} handles. All instructions have an opcode (op) that specifies the operation, which occupies the first 6 bits of the instruction. For {{< coloredLink url="https://saebnaser.blog/post/32-bit-mips-alu-motivation/#three-basic-instruction-formats" >}}R-type{{< /coloredLink >}} instructions, such as addition, subtraction, and logical operations, it is also necessary to examine the last 6 bits (function field) to determine the specific operation being performed.
 >
 
 #### Data Path
@@ -933,13 +932,13 @@ begin
 end Behavioral;
 ```
 
-This data path ties together various components like ALU, PC, Registers, Memory, and Multiplexers to handle instruction {{< colour color="#FEFE54" >}}fetching{{< /colour >}}, {{< colour color="#FEFE54" >}}decoding{{< /colour >}}, {{< colour color="#FEFE54" >}}execution{{< /colour >}}, and the {{< colour color="#FEFE54" >}}writing back{{< /colour >}} of results. It represents the entire interface of the CPU.
+This data path ties together various components like ALU, PC, Registers, Memory, and Multiplexers to handle instruction {{< colour >}}fetching{{< /colour >}}, {{< colour >}}decoding{{< /colour >}}, {{< colour >}}execution{{< /colour >}}, and the {{< colour >}}writing back{{< /colour >}} of results. It represents the entire interface of the CPU.
 
 #### 32-bit MIPS Assembler
 
 As previously discussed during the implementation of the instruction memory, designed to store program instructions, I integrated a test program. However, I want to provide a way to define custom programs using MIPS Assembly and simply passing them to a MIPS Assembler, which encodes the assembly instruction into machine code. Afterwards, you can load the encoded instructions into the instruction memory.
 
-##### {{< colour color="#FEFE54" >}}MIPSAssembler.h{{< /colour >}}
+##### {{< colour >}}MIPSAssembler.h{{< /colour >}}
 ```h
 #pragma once
 
@@ -958,7 +957,7 @@ void DecToBin(std::vector<int>& bin, int dec, int n);
 int EncodeInstructions(const std::string& inputFile, const std::string& outputFile);
 ```
 
-##### {{< colour color="#FEFE54" >}}MIPSAssembler.cpp{{< /colour >}}
+##### {{< colour >}}MIPSAssembler.cpp{{< /colour >}}
 ```cpp
 #include "MIPSAssembler.h"
 
@@ -1339,7 +1338,7 @@ int EncodeInstructions(const std::string& inputFile, const std::string& outputFi
 }
 ```
 
-##### {{< colour color="#FEFE54" >}}Main.cpp{{< /colour >}}
+##### {{< colour >}}Main.cpp{{< /colour >}}
 ```cpp
 #include "MIPSAssembler.h"
 
@@ -1356,7 +1355,7 @@ int main(int argc, char* argv[])
 ```
 The assembler operates by reading instructions from an input file, mapping register names to their binary representations using a lookup table, encoding each instruction into binary format, and writing the encoded instructions to an output file. The assembler is customized via command line arguments, which specify the input file containing the assembly instructions and the output file for the machine code, allowing to easily change input and output files without modifying the code. 
 
-For example, running {{< colour color="#FEFE54" >}}./MIPSAssembler input.asm output.bin{{< /colour >}} processes the instructions in input.asm and writes the machine code to output.bin.
+For example, running {{< colour >}}./MIPSAssembler input.asm output.bin{{< /colour >}} processes the instructions in input.asm and writes the machine code to output.bin.
 
 {{< figure src="/images/Assembler.png" alt="MIPS Assembler in action" >}}
 
@@ -1364,7 +1363,7 @@ Now, we can easily write any program in MIPS Assembly and feed it to the instruc
 
 #### Simulation on Cyclone V SoC Development Kit
 
-In order to map the logical design to physical hardware on the {{< colour color="#FEFE54" >}}Cyclone V SX{{< /colour >}} FPGA, I need a top-level module. By assigning specific FPGA pins to inputs and outputs, such as the clock and reset signals, this module coordinates the flow of data and control across the processor’s components. It enables the synthesis and real-world testing of our MIPS architecture and, more importantly, our ALU.
+In order to map the logical design to physical hardware on the {{< colour >}}Cyclone V SX{{< /colour >}} FPGA, I need a top-level module. By assigning specific FPGA pins to inputs and outputs, such as the clock and reset signals, this module coordinates the flow of data and control across the processor’s components. It enables the synthesis and real-world testing of our MIPS architecture and, more importantly, our ALU.
 
 ```vhdl
 library IEEE;
@@ -1468,14 +1467,14 @@ begin
 end Behavioral;
 ```
 
-Before programming the FPGA with the VHDL design, I set it up for serial communication using {{< coloredLink url="https://www.putty.org/" color="#FEFE54" >}}PuTTY{{< /coloredLink >}}, to make sure everything was correctly configured.
+Before programming the FPGA with the VHDL design, I set it up for serial communication using {{< coloredLink url="https://www.putty.org/" >}}PuTTY{{< /coloredLink >}}, to make sure everything was correctly configured.
 
 {{< figure src="/images/CycloneV_SX_SoC_DevelopmentKit.jpg" alt="CycloneV SX SoC Development Kit In Action!" >}}
 
-After thorough reading of the Cyclone V SoC Development Kit {{< coloredLink url="https://www.intel.com/content/www/us/en/content-details/653920/cyclone-v-soc-development-kit-user-guide.html" color="#FEFE54" >}}User Guide{{< /coloredLink >}}, I realized that the complexity and professional focus of the kit do not align with the tests I planned for this project. The kit’s lack of built-in user interaction components like 7-segment displays and push buttons makes it less suited for my immediate needs. While I could rig up an external circuit to add these features, why reinvent the wheel? I plan to discuss with my supervisor the possibility of switching to the DE1 board for this project, since I have some experience with it from my Digital Computer Design course. I think I’ll write a dedicated post about setting up a proper simulation environment.
+After thorough reading of the Cyclone V SoC Development Kit {{< coloredLink url="https://www.intel.com/content/www/us/en/content-details/653920/cyclone-v-soc-development-kit-user-guide.html" >}}User Guide{{< /coloredLink >}}, I realized that the complexity and professional focus of the kit do not align with the tests I planned for this project. The kit’s lack of built-in user interaction components like 7-segment displays and push buttons makes it less suited for my immediate needs. While I could rig up an external circuit to add these features, why reinvent the wheel? I plan to discuss with my supervisor the possibility of switching to the DE1 board for this project, since I have some experience with it from my Digital Computer Design course. I think I’ll write a dedicated post about setting up a proper simulation environment.
 
 #### Source Code
-You can find all the code {{< coloredLink url="https://github.com/Saeb0x/MIPS32-ALU" color="#FEFE54" >}}here{{< /coloredLink >}}.
+You can find all the code {{< coloredLink url="https://github.com/Saeb0x/MIPS32-ALU" >}}here{{< /coloredLink >}}.
 
 ***
 Last Edited: May 24, 2026
