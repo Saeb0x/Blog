@@ -5,12 +5,7 @@
   </header>
   <section class="post-list">
     {{ range .Pages }}
-    <article class="post-item">
-      <a href="{{ .Permalink }}" class="post-item-link">
-        <time class="post-date" datetime="{{ .Date.Format "2006-01-02" }}">{{ .Date.Format "2006-01-02" }}</time>
-        <span class="post-title">{{ .Title }}</span>
-      </a>
-    </article>
+    {{ partial "post-item.html" . }}
     {{ else }}
     <p class="no-posts">No posts yet.</p>
     {{ end }}

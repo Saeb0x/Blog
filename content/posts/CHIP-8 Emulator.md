@@ -1565,13 +1565,13 @@ Now it's time to test if our CPU is operating like we expect. Check this {{< col
 
 {{< figure src="/images/chip8-test_opcode.png" alt="Running test_opcode.ch8 on the CHIP-8 Emulator" width="800px" height="500px">}}
 
-{{< video src="/videos/chip8-test_opcode.mp4" autoplay="false" controls="true" loop="false" muted="false" width="640" height="360" >}}
+{{< video src="/videos/chip8-test_opcode.mp4" >}}
 
 {{< highlight plaintext >}}
 > chip8 25 300 cave.ch8
 {{< /highlight >}}
 
-{{< video src="/videos/chip8-cave.mp4" autoplay="false" controls="true" loop="false" muted="false" width="640" height="360" >}}
+{{< video src="/videos/chip8-cave.mp4" >}}
 
 This game is harder than it looks.
 
@@ -1579,7 +1579,7 @@ This game is harder than it looks.
 > chip8 25 300 tetris.ch8
 {{< /highlight >}}
 
-{{< video src="/videos/chip8-tetris.mp4" autoplay="false" controls="true" loop="false" muted="false" width="640" height="360" >}}
+{{< video src="/videos/chip8-tetris.mp4" >}}
 
 #### Conclusion
 That's it, we've successfully built our very first emulator! Personally, I feel like this journey has deepened my understanding of low-level computer fundamentals - knowledge I'll surely leverage in future programming adventures. I'm considering building an NES emulator next, or I might take the hardware route and craft a physical CHIP-8 machine, once I explore Verilog and FPGA :)

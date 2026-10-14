@@ -1,15 +1,6 @@
-.section-label {
-  font-family: $font-mono;
-  font-size: 0.85rem;
-  font-weight: normal;
-  color: $text-faint;
-  margin-bottom: 1.25rem;
-}
-
 .post-list {
   display: flex;
   flex-direction: column;
-  gap: 0;
   padding-top: 0.5rem;
 }
 
@@ -21,26 +12,24 @@
   color: inherit;
 
   &:hover {
-    .post-title { color: $accent; }
+    .post-item-title { color: $accent; }
   }
 }
 
 .post-date {
-  font-family: $font-mono;
   font-size: 0.875rem;
   color: $text-muted;
   flex-shrink: 0;
   min-width: 6.5em;
 }
 
-.post-item-link .post-title {
+.post-item-title {
   font-size: 0.95rem;
   color: $text;
   transition: color 0.15s ease;
 }
 
 .no-posts {
-  font-family: $font-mono;
   font-size: 0.9rem;
   color: $text-faint;
 }

@@ -65,7 +65,7 @@ Next, we move to the Programmer tool, where we carry out the process of burning 
 
 Now we simulate!
 
-{{< video src="/videos/SevenSegmentDisplay_Simulation.mp4" autoplay="false" controls="true" loop="false" muted="false" width="640" height="360" >}}
+{{< video src="/videos/SevenSegmentDisplay_Simulation.mp4" >}}
 
 Before returning to our MIPS ALU, let's add a twist. I want to make use of four consecutive seven-segment displays, with each segment being controlled by two switches, totaling 8 switches for all displays.
 
@@ -127,7 +127,7 @@ end Behavioral;
 ````
 {{< figure src="/images/PinPlanner2.png" alt="Pin Planner 2 Screenshot" width="700px" height="700px">}}
 
-{{< video src="/videos/SevenSegmentDisplay_Simulation2.mp4" autoplay="false" controls="true" loop="false" muted="false" width="640" height="360" >}}
+{{< video src="/videos/SevenSegmentDisplay_Simulation2.mp4" >}}
 
 #### Back To 32-Bit MIPS ALU
 In a single-cycle MIPS CPU design, like mine, every instruction is designed to execute in a single clock cycle. This means that all the stages of instruction execution—fetch, decode, execute, memory access, and write-back—occur within a single clock cycle. The cycle's length is based on the time it takes for the slowest instruction. This is usually determined by the longest path an instruction takes, often the load word (lw) instruction.
@@ -203,7 +203,7 @@ This test bench simulates the operation of the single-cycle MIPS CPU, focusing o
 >I screenshotted the waveform from {{< coloredLink url="https://www.intel.com/content/www/us/en/software-kit/750368/modelsim-intel-fpgas-standard-edition-software-version-18-1.html" >}}Intel ModelSim{{< /coloredLink >}} software, as I couldn't find a better way to export it in higher quality. For better viewing, open it in a new tab. Feedback from experienced users on waveform exporting is welcome.
 >
 
-Let's take the first full cycle of our execution, which is according to our test program inside our Instruction Memory is an I-type instruction {{<colour>}}addi $R1, $R0, 30{{< /colour >}}. 
+Let's take the first full cycle of our execution, which is according to our test program inside our Instruction Memory is an I-type instruction {{< colour >}}addi $R1, $R0, 30{{< /colour >}}. 
 
 {{< figure src="/images/InstructionMemory_addi.png" alt="I-type instruction addi in the Instruction Memory" width="500px" height="500px">}}
 
@@ -211,19 +211,19 @@ As I detailed in my design post, each MIPS instruction spans 32 bits, which is e
 
 {{< figure src="/images/TopLevel_tb_Waveform_addi.png" alt="addi waveform" width="700px" height="700px">}}
 
-Now we can clearly see that our complete 32-bit instruction is the concatenation of the 4 bytes occupying the first 4 addresses: 0, 1, 2, and 3, resulting in the full instruction {{<colour>}}00100000000000010000000000011110{{< /colour >}}.
+Now we can clearly see that our complete 32-bit instruction is the concatenation of the 4 bytes occupying the first 4 addresses: 0, 1, 2, and 3, resulting in the full instruction {{< colour >}}00100000000000010000000000011110{{< /colour >}}.
 
-According to the way I designed the {{< coloredLink url="https://saebnaser.blog/post/32-bit-mips-alu-design/#control-unit" >}}Control Unit{{< /coloredLink >}}, which generates control signals for various components within the processor based on our input instruction (addi in this case), we should expect an 11-bit data signal to set the control signals. In our case, the data signal is {{<colour>}}000000000011{{< /colour >}}, which perfectly aligns with our implementation.
+According to the way I designed the {{< coloredLink url="https://saebnaser.blog/post/32-bit-mips-alu-design/#control-unit" >}}Control Unit{{< /coloredLink >}}, which generates control signals for various components within the processor based on our input instruction (addi in this case), we should expect an 11-bit data signal to set the control signals. In our case, the data signal is {{< colour >}}000000000011{{< /colour >}}, which perfectly aligns with our implementation.
 
 {{< figure src="/images/ControlUnit_addi.png" alt="addi instruction data signal" width="700px" height="700px">}}
 
-Returning to our primary focus, the ALU, we observe that the ALUOp, indicating the ALU operation to be performed, is set to {{<colour>}}0000{{< /colour >}}. This precisely matches our design, where 0000 signifies addition operations.
+Returning to our primary focus, the ALU, we observe that the ALUOp, indicating the ALU operation to be performed, is set to {{< colour >}}0000{{< /colour >}}. This precisely matches our design, where 0000 signifies addition operations.
 
-Moving to the next instruction {{<colour>}}sw $R1,0($R0){{< /colour >}}.
+Moving to the next instruction {{< colour >}}sw $R1,0($R0){{< /colour >}}.
 
 {{< figure src="/images/Testbench_tb_SimulationWaveform_storeword.png" alt="store word (sw) waveform" width="700px" height="700px">}}
 
-The full instruction, {{<colour>}}10101100000000010000000000000000{{< /colour >}}, perfectly aligns with our layout in the Instruction Memory. Additionally, the data signal, {{<colour>}}000000000110{{< /colour >}}, matches the control signal settings in the Control Unit. Regarding the ALUOp, it remains at 0000 because this instruction is a Memory write (store word), not an ALU operation. However, if you review the waveform, you'll notice that the ALUOp changes multiple times, indicating that we encountered 5 ALU operations in our test program.
+The full instruction, {{< colour >}}10101100000000010000000000000000{{< /colour >}}, perfectly aligns with our layout in the Instruction Memory. Additionally, the data signal, {{< colour >}}000000000110{{< /colour >}}, matches the control signal settings in the Control Unit. Regarding the ALUOp, it remains at 0000 because this instruction is a Memory write (store word), not an ALU operation. However, if you review the waveform, you'll notice that the ALUOp changes multiple times, indicating that we encountered 5 ALU operations in our test program.
 
 With our DE2 board, we can supply a 50MHz clock, achieving the same results.
 

@@ -70,7 +70,7 @@ Lastly, for the logical shifts, I've thrown bit shifters: one for the left and a
 
 This is me playing with the 1-Bit ALU :)
 
-{{< video src="/videos/Testing 1-Bit ALU.mp4" autoplay="false" controls="true" loop="false" muted="false" width="640" height="360" >}}
+{{< video src="/videos/Testing 1-Bit ALU.mp4" >}}
 
 Instead of having the 1-Bit ALU viewed as a circuit layout, we can capture it in Logisim as an overall object by switching the mode from being the circuit's Layout to the circuit's Subcircuit Appearance.
 
@@ -82,7 +82,7 @@ Now, to get our fully operational {{< colour >}}32-Bit{{< /colour >}} ALU that p
 
 Much of the fun was in the design and learning, but the act of actually making the connections was a nightmare. Open the image in a new tab and zoom in to understand the circuit and try to spot Waldo ;)
 
-{{< video src="/videos/Testing 32-Bit ALU.mp4" autoplay="false" controls="true" loop="false" muted="false" width="640" height="360" >}}
+{{< video src="/videos/Testing 32-Bit ALU.mp4" >}}
 
 We can also view our 32-Bit ALU as an Overall Object.
 

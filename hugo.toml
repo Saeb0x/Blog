@@ -2,12 +2,8 @@ baseURL = "https://saebnaser.blog/"
 title = "Saeb Naser"
 locale = "en-us"
 
-enableEmoji = true
 enableRobotsTXT = true
 disableKinds = ["taxonomy", "term"]
-
-[pagination]
-  pagerSize = 10
 
 [permalinks]
   posts = "/post/:slug/"

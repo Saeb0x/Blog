@@ -12,23 +12,6 @@
 }
 
 .footer-copy {
-  font-family: $font-mono;
   font-size: 0.85rem;
   color: $text-muted;
-}
-
-.footer-links {
-  display: flex;
-  gap: 1.25rem;
-
-  a {
-    font-family: $font-mono;
-    font-size: 0.85rem;
-    color: $text-muted;
-    transition: color 0.15s ease;
-
-    &:hover {
-      color: $accent;
-    }
-  }
 }

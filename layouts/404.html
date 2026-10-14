@@ -3,7 +3,7 @@
   <div class="error-page">
     <p class="error-code">404</p>
     <p class="error-msg">// page not found</p>
-    <a href="{{ .Site.BaseURL }}" class="error-link">cd ~</a>
+    <a href="{{ "/" | relURL }}" class="error-link">cd ~</a>
   </div>
 </div>
 {{ end }}
