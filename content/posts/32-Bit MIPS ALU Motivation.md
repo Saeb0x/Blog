@@ -1,7 +1,7 @@
 ---
 title: "32-Bit MIPS ALU: Motivation"
 date: 2023-12-29
-description: "A primer on binary, boolean algebra, and digital design fundamentals before diving into MIPS ALU design."
+description: "A primer on binary, boolean algebra, and digital design fundamentals before diving into MIPS ALU design"
 draft: false
 ---
 I've recently started my Final Year Project with a focus on designing a 32-bit MIPS Arithmetic Logic Unit (ALU) based on RISC, and one thing became clear: the basics are absolutely crucial. Things like logic, boolean algebra, and digital design form the foundation for everything in this field. Even in the simple {{< coloredLink url="https://saebnaser.blog/post/chip-8-emulator/" >}}CHIP-8 Emulator{{< /coloredLink >}} I built last time, I found myself deep in low-level bit manipulation. This included working with binary, hex, logical operators, bitmasking, bit shifting, and more. It's for this reason that I'm putting together this blog post, which will serve as a primer or refresher for all the specialized topics I'll dive into in future blog posts. Additionally, I plan to document my ongoing journey in designing the ALU. I hope this documentation can be a valuable resource for others keen on learning about digital design and computer architecture.

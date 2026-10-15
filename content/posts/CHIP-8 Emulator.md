@@ -1,7 +1,7 @@
 ---
 title: "CHIP-8 Emulator"
 date: 2023-08-09
-description: "Building a CHIP-8 interpreter and emulator from scratch in C++, covering opcodes, display, timers, and input handling."
+description: "Building a CHIP-8 interpreter and emulator from scratch in C++, covering opcodes, display, timers, and input handling"
 draft: false
 ---
 Lately, I've been looking for a side project to work on outside my daytime internship. I've always loved emulators for their ability to bring back old retro games, so I figured it would be interesting to understand how emulators work and even try my hand at building one!

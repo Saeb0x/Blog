@@ -1,7 +1,7 @@
 ---
 title: "32-Bit MIPS ALU: Simulation"
 date: 2024-01-09
-description: "Simulating and validating the 32-bit MIPS ALU on DE1 and DE2 FPGA boards using ModelSim and seven-segment display output."
+description: "Simulating and validating the 32-bit MIPS ALU on DE1 and DE2 FPGA boards using ModelSim and seven-segment display output"
 draft: false
 ---
 

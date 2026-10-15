@@ -1,7 +1,7 @@
 ---
 title: "32-Bit MIPS ALU: Design"
 date: 2024-01-07
-description: "Designing and implementing a 32-bit MIPS ALU in VHDL as part of a Final Year Project, targeting the DE1 FPGA board."
+description: "Designing and implementing a 32-bit MIPS ALU in VHDL as part of a Final Year Project, targeting the DE1 FPGA board"
 draft: false
 ---
 
